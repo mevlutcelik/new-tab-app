@@ -366,6 +366,11 @@ main {
   height: 1.125rem;
 }
 
+.search button:active {
+  -webkit-transform: scale(0.85);
+          transform: scale(0.85);
+}
+
 @media all and (max-width: 320px) {
   #app {
     margin: 1rem;

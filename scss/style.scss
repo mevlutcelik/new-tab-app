@@ -273,6 +273,9 @@ main {
             width: $search-button-svg-size;
             height: $search-button-svg-size;
         }
+        &:active{
+            transform: scale($scale);
+        }
     }
 }
 
