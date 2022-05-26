@@ -53,6 +53,19 @@ a {
   cursor: pointer;
 }
 
+.app-desc {
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.app-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
 nav {
   display: -webkit-box;
   display: -ms-flexbox;
