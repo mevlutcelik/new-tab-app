@@ -5,9 +5,17 @@ function installControle() {
 
 // Uygulama ayarlarını kontrol etme
 function mxApp(controle) {
-    if (controle) { } else {
+    let app = document.querySelector('#app');
+    const mxAppName = 'Yeni Sekme';
+    let appName = document.querySelector('#appName');
+    // appName.forEach(name => {
+    //     appName !== null ? appName.innerHTML = mxAppName : null;
+    // });
+    if (!controle) {
+        app.style.justifyContent = 'center';
+        //app.append('asdasdad');
+    } else {
 
-        let app = document.querySelector('#app');
 
         // NAV
         let nav = document.createElement('nav');
