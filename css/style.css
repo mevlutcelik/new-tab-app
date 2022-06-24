@@ -9,7 +9,7 @@
 
 html {
   background-image: url("/images/forms-abstract-4k-09.jpg");
-  background-size: cover;
+  background-size: 100vw 100vh;
   background-repeat: no-repeat;
   overflow: hidden;
 }
