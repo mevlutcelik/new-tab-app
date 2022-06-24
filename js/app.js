@@ -3,6 +3,30 @@ function installControle() {
     return localStorage.getItem('MX_APP_CONFIG') === null ? false : true;
 }
 
+function create(options) {
+    /*
+    Örnek kullanım:
+    create({
+        el: 'div',
+        class: '', // Elementimize eklemek istediğimiz classlar.
+        parent: '', // Hangi elementin içerisine eklenecek -> querySelector()
+    });
+    */
+    let createElement = document.createElement(options.el ?? 'div');
+    let classes = options.class !== undefined ? options.class.split(' ') : '';
+    createElement.classList.add(...classes);
+    createElement.innerHTML = options.content ?? 'Boş içerik';
+    document.querySelector(options.parent).append(createElement);
+    return createElement;
+}
+
+create({
+    el: 'span',
+    class: 'deneme deneme-text',
+    parent: '#app',
+    content: `<a href="#!">Deneme</a>`,
+})
+
 // Uygulama ayarlarını kontrol etme
 function mxApp(controle) {
     let app = document.querySelector('#app');
@@ -13,13 +37,13 @@ function mxApp(controle) {
     // });
     if (!controle) {
         app.style.justifyContent = 'center';
-        //app.append('asdasdad');
+
     } else {
 
 
         // NAV
         let nav = document.createElement('nav');
-        
+
         let navDiv1 = document.createElement('div');
         let settingsButton = document.createElement('button');
         settingsButton.setAttribute('tabindex', '3');
@@ -81,7 +105,7 @@ function mxApp(controle) {
         ];
         tabs.classList.add('tabs');
         tabs.innerHTML = null;
-        for(let tabsLink in tabsLinks){
+        for (let tabsLink in tabsLinks) {
             tabs.innerHTML += `<a ${tabsLinks[tabsLink].class !== undefined ? 'class="active"' : ''}>${tabsLinks[tabsLink].name}</a>`;
         }
 
