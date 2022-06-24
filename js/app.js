@@ -20,16 +20,7 @@ function create(options) {
     });
     */
     let createElement = document.createElement(options.el ?? 'div');
-    let classes;
-    if (options.class !== undefined) {
-        if (typeof (options.class === 'object')) {
-            classes = options.class;
-        } else {
-            classes = options.class.split(' ');
-        }
-    } else {
-        classes = 'sadasd';
-    }
+    let classes = options.class !== undefined ? (typeof(options.class === 'object') ? options.class : options.class.split(' ')) : '';
     console.log(classes);
     createElement.classList.add(...classes);
     createElement.innerHTML = options.content ?? null;
