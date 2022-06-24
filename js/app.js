@@ -8,23 +8,42 @@ function create(options) {
     Örnek kullanım:
     create({
         el: 'div',
+
         class: '', // Elementimize eklemek istediğimiz classlar.
+        class: [
+            'class-1',
+            'class-2'
+        ], // Elementimize eklemek istediğimiz classlar.
+
         parent: '', // Hangi elementin içerisine eklenecek -> querySelector()
+        content: '', // İçerik ekleyebiliriz. (Html destekler)
     });
     */
     let createElement = document.createElement(options.el ?? 'div');
-    let classes = options.class !== undefined ? options.class.split(' ') : '';
+    let classes;
+    if (options.class !== undefined) {
+        if (typeof (options.class === 'object')) {
+            classes = options.class;
+        } else {
+            classes = options.class.split(' ');
+        }
+    } else {
+        classes = 'sadasd';
+    }
+    console.log(classes);
     createElement.classList.add(...classes);
-    createElement.innerHTML = options.content ?? 'Boş içerik';
+    createElement.innerHTML = options.content ?? null;
     document.querySelector(options.parent).append(createElement);
     return createElement;
 }
 
 create({
     el: 'span',
-    class: 'deneme deneme-text',
+    class: [
+        'deneme',
+        'deneme-text'
+    ],
     parent: '#app',
-    content: `<a href="#!">Deneme</a>`,
 })
 
 // Uygulama ayarlarını kontrol etme
