@@ -1,6 +1,6 @@
 // Import Font
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-@import 'variables';
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+@import "variables";
 
 // Reset Css
 * {
@@ -13,9 +13,10 @@
 
 // Html
 html {
-    background-image: url('/images/forms-abstract-4k-09.jpg');
+    background-image: url("/images/forms-abstract-4k-09.jpg");
     background-size: cover;
     background-repeat: no-repeat;
+    overflow: hidden;
 }
 
 // App
@@ -43,12 +44,12 @@ a {
     cursor: pointer;
 }
 
-.app-desc{
+.app-desc {
     text-align: center;
     font-size: 0.875rem;
     font-weight: 500;
 }
-.app-title{
+.app-title {
     text-align: center;
     font-size: 1.5rem;
     font-weight: 600;
@@ -111,7 +112,6 @@ nav {
             display: flex;
             align-items: center;
             font-size: 0.75rem;
-
         }
     }
 
@@ -161,7 +161,7 @@ main {
 
             &::before {
                 position: absolute;
-                content: '';
+                content: "";
                 top: -0.25rem;
                 background: $color-primary;
                 width: 0.5rem;
@@ -202,7 +202,7 @@ main {
 
         &::before {
             position: absolute;
-            content: '';
+            content: "";
             width: $blockquote-dvider-size;
             left: calc(-#{$blockquote-dvider-size} - 2rem);
             height: 2px;
@@ -213,7 +213,7 @@ main {
 
         &::after {
             position: absolute;
-            content: '';
+            content: "";
             width: $blockquote-dvider-size;
             left: calc(#{$blockquote-svg-size} + 2rem);
             height: 2px;
@@ -260,7 +260,7 @@ main {
             color: $color-black;
             border: 1px solid rgba(0, 0, 0, 0.1);
 
-            &~button {
+            & ~ button {
                 background-color: $color-primary;
                 color: $color-white;
             }
@@ -281,15 +281,15 @@ main {
         border-radius: calc(#{$search-button-size} / 2);
         right: calc(((#{$search-height} - #{$search-button-size}) / 2) + 1px);
         top: calc(((#{$search-height} - #{$search-button-size}) / 2) + 1px);
-        svg{
+        svg {
             width: $search-button-svg-size;
             height: $search-button-svg-size;
         }
-        &:active{
+        &:active {
             transform: scale($scale);
         }
     }
 }
 
 // Import Media Screen Css
-@import 'media';
+@import "media";
