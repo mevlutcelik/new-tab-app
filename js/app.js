@@ -21,7 +21,6 @@ function create(options) {
     */
     let createElement = document.createElement(options.el ?? 'div');
     let classes = options.class !== undefined ? (typeof(options.class === 'object') ? options.class : options.class.split(' ')) : '';
-    console.log(classes);
     createElement.classList.add(...classes);
     createElement.innerHTML = options.content ?? null;
     document.querySelector(options.parent).append(createElement);
@@ -35,6 +34,7 @@ create({
         'deneme-text'
     ],
     parent: '#app',
+    content: 'İçerik',
 })
 
 // Uygulama ayarlarını kontrol etme
