@@ -27,27 +27,21 @@ function create(options) {
     return createElement;
 }
 
-create({
-    el: 'span',
-    class: [
-        'deneme',
-        'deneme-text'
-    ],
-    parent: '#app',
-    content: 'İçerik',
-})
+// create({
+//     el: 'span',
+//     class: [
+//         'deneme',
+//         'deneme-text'
+//     ],
+//     parent: '#app',
+//     content: 'İçerik',
+// })
 
 // Uygulama ayarlarını kontrol etme
 function mxApp(controle) {
     let app = document.querySelector('#app');
-    const mxAppName = 'Yeni Sekme';
-    let appName = document.querySelector('#appName');
-    // appName.forEach(name => {
-    //     appName !== null ? appName.innerHTML = mxAppName : null;
-    // });
-    if (!controle) {
+    if (controle) {
         app.style.justifyContent = 'center';
-
     } else {
 
 
