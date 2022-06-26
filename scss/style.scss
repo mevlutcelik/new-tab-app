@@ -27,6 +27,7 @@ html {
     flex-direction: column;
     max-width: $app-max-width;
     margin: $app-margin;
+    padding: 0 1rem;
     color: #fff;
 }
 
@@ -284,6 +285,7 @@ main {
         svg {
             width: $search-button-svg-size;
             height: $search-button-svg-size;
+            transition: fill $transition-time, stroke $transition-time;
         }
         &:active {
             transform: scale($scale);
