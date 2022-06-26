@@ -26,6 +26,7 @@ html {
           flex-direction: column;
   max-width: 48rem;
   margin: 3rem auto;
+  padding: 0 1rem;
   color: #fff;
 }
 
@@ -355,6 +356,8 @@ main {
 .search button svg {
   width: 1.125rem;
   height: 1.125rem;
+  -webkit-transition: fill 0.3s, stroke 0.3s;
+  transition: fill 0.3s, stroke 0.3s;
 }
 .search button:active {
   -webkit-transform: scale(0.85);
