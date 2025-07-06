@@ -1,8 +1,0 @@
-@media all and (max-width:320px) {
-    #app{
-        height: calc((var(--vh, 1vh) * 100) - (1rem * 2));
-    }
-    .time{
-        font-size: 64px;
-    }
-}
