@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Yeni Sekme Uygulaması",
-  "version": "1.0.16",
+  "version": "1.0.23",
   "description": "Yeni sekme için özel arayüz",
   "permissions": [
     "bookmarks"
@@ -13,6 +13,6 @@
     "default_title": "Yeni Sekme"
   },
   "host_permissions": [
-    "<all_urls>"
+    "https://api.openweathermap.org/*"
   ]
 }

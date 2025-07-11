@@ -1,19 +1,35 @@
 // src/pages/Setup.jsx
 import React, { useState } from "react";
 import { setSetupComplete, setUserSettings } from "../lib/storage";
-import { isValidUrl } from "@/utils/validators";
+import { isValidUrl, normalizeUrl, getFaviconUrl } from "@/utils/validators";
 
 function Setup() {
   const [searchEngine, setSearchEngine] = useState("google");
-  const [favorites, setFavorites] = useState([""]);
+  const [favorites, setFavorites] = useState([{ url: "", title: "" }]);
+  const [showSeconds, setShowSeconds] = useState(false);
+  const [newTab, setNewTab] = useState(true);
+  const [errors, setErrors] = useState({});
+  const [openFavoritesInNewTab, setOpenFavoritesInNewTab] = useState(true);
 
-  const handleFavoriteChange = (index, value) => {
+  const handleFavoriteUrlChange = (index, value) => {
     const updated = [...favorites];
-    updated[index] = value;
+    updated[index].url = value;
+    setFavorites(updated);
+
+    const normalized = normalizeUrl(value);
+    const isValid = isValidUrl(normalized);
+    setErrors((prev) => ({ ...prev, [index]: !isValid }));
+  };
+
+  const handleFavoriteTitleChange = (index, value) => {
+    const updated = [...favorites];
+    updated[index].title = value;
     setFavorites(updated);
   };
 
-  const addFavorite = () => setFavorites([...favorites, ""]);
+  const addFavorite = () => {
+    setFavorites([...favorites, { url: "", title: "" }]);
+  };
 
   const removeFavorite = (index) => {
     setFavorites(favorites.filter((_, i) => i !== index));
@@ -21,15 +37,21 @@ function Setup() {
 
   const handleSubmit = () => {
     const cleanedFavorites = favorites
-      .map((f) => f.trim())
-      .filter((f) => f !== "" && isValidUrl(f));
+      .map((f) => {
+        const normalized = normalizeUrl(f.url.trim());
+        return {
+          url: normalized,
+          title: f.title.trim() || new URL(normalized).hostname,
+        };
+      })
+      .filter((f) => f.url && isValidUrl(f.url));
 
-    if (cleanedFavorites.length !== favorites.filter(f => f.trim() !== "").length) {
-      alert("Geçersiz linkler var. Lütfen http:// veya https:// ile başlayan geçerli linkler girin.");
+    if (cleanedFavorites.length !== favorites.filter(f => f.url.trim() !== "").length) {
+      alert("Geçersiz linkler var. Lütfen kontrol edin.");
       return;
     }
 
-    setUserSettings({ searchEngine, favorites: cleanedFavorites });
+    setUserSettings({ searchEngine, favorites: cleanedFavorites, showSeconds, newTab, openFavoritesInNewTab });
     setSetupComplete();
     window.location.reload();
   };
@@ -53,30 +75,95 @@ function Setup() {
 
       <div className="mb-4">
         <label className="block font-medium">Favori Linkler</label>
-        {favorites.map((link, index) => (
-          <div key={index} className="flex items-center gap-2 mb-2">
-            <input
-              type="text"
-              value={link}
-              placeholder="https://örnek.com"
-              onChange={(e) => handleFavoriteChange(index, e.target.value)}
-              className="border p-2 rounded w-full"
-            />
-            <button
-              onClick={() => removeFavorite(index)}
-              className="bg-red-500 text-white px-2 py-1 rounded"
-            >
-              Sil
-            </button>
-          </div>
-        ))}
+        {favorites.map((fav, index) => {
+          const normalizedUrl = normalizeUrl(fav.url);
+          const isInvalid = errors[index];
+          const showFavicon = fav.url && isValidUrl(normalizedUrl);
 
-        <button onClick={addFavorite} className="mt-2 bg-green-500 text-white px-4 py-2 rounded">
+          return (
+            <div key={index} className="mb-4 border p-3 rounded">
+              <div className="flex items-center gap-2 mb-2">
+                {showFavicon && (
+                  <img
+                    src={getFaviconUrl(normalizedUrl)}
+                    alt=""
+                    className="w-5 h-5"
+                    onError={(e) => (e.target.style.display = "none")}
+                  />
+                )}
+                <input
+                  type="text"
+                  value={fav.url}
+                  placeholder="https://site.com"
+                  onChange={(e) => handleFavoriteUrlChange(index, e.target.value)}
+                  className={`border p-2 rounded w-full ${isInvalid ? "border-red-500" : ""}`}
+                />
+                <button
+                  onClick={() => removeFavorite(index)}
+                  className="bg-red-500 text-white px-2 py-1 rounded"
+                >
+                  Sil
+                </button>
+              </div>
+              <input
+                type="text"
+                value={fav.title}
+                placeholder="Başlık (opsiyonel)"
+                onChange={(e) => handleFavoriteTitleChange(index, e.target.value)}
+                className="border p-2 rounded w-full"
+              />
+            </div>
+          );
+        })}
+
+        <button
+          onClick={addFavorite}
+          className="mt-2 bg-green-500 text-white px-4 py-2 rounded"
+        >
           + Link Ekle
         </button>
       </div>
 
-      <button onClick={handleSubmit} className="bg-blue-600 text-white px-4 py-2 rounded">
+      <div className="mb-4">
+        <label className="inline-flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={showSeconds}
+            onChange={(e) => setShowSeconds(e.target.checked)}
+            className="form-checkbox"
+          />
+          <span>Saatte saniyeyi göster</span>
+        </label>
+      </div>
+
+      <div className="mb-4">
+        <label className="inline-flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={newTab}
+            onChange={(e) => setNewTab(e.target.checked)}
+            className="form-checkbox"
+          />
+          <span>Arama sonucunu yeni sekmede aç</span>
+        </label>
+      </div>
+
+      <div className="mb-4">
+        <label className="inline-flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={openFavoritesInNewTab}
+            onChange={(e) => setOpenFavoritesInNewTab(e.target.checked)}
+            className="form-checkbox"
+          />
+          <span>Favori linkleri yeni sekmede aç</span>
+        </label>
+      </div>
+
+      <button
+        onClick={handleSubmit}
+        className="bg-blue-600 text-white px-4 py-2 rounded"
+      >
         Kaydet ve Devam Et
       </button>
     </div>

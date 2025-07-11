@@ -691,3 +691,62 @@ select {
     transform: scale(1) rotate(0deg) translate(0px, 0px);
   }
 }
+
+.search-box{
+  position: relative;
+}
+.search{
+  outline: 0;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(1rem);
+  height: 3.5rem;
+  width: 18rem;
+  padding: 0 calc(1rem + 3rem) 0 1rem;
+  border-radius: 18rem;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-light);
+  transition: background-color 300ms, transform 300ms;
+}
+.search:focus{
+  background-color: rgba(255,255,255,0.7);
+  color: var(--color-dark);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+.search::placeholder{
+  color: rgba(255,255,255,0.2);
+}
+.search:focus::placeholder{
+  color: rgba(0,0,0,0.2);
+}
+.search:focus ~ button{
+  background-color: var(--color-primary);
+}
+.search:focus ~ button svg path{
+  stroke: var(--color-light);
+}
+.search-box button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-light);
+  border: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1.5rem;
+  position: absolute;
+  right: calc(((3.5rem - 3rem) / 2) + 1px);
+  top: calc(((3.5rem - 3rem) / 2) + 1px);
+  cursor: pointer;
+  transition: background-color 300ms, transform 300ms;
+}
+.search-box button:active{
+  transform: scale(0.7);
+}
+.search-box button svg path{
+  stroke: var(--color-dark);
+}
+.search-box button svg{
+  width: 1.125rem;
+}

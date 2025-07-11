@@ -1,7 +1,11 @@
-// src/pages/Home.jsx
 import { useState } from "react";
 import { getUserSettings, resetSettings } from "@/lib/storage";
 import { getFaviconUrl } from "@/utils/validators";
+import AppLayout from "@/layouts/AppLayout";
+import Header from "@/layouts/Header";
+import TimeDisplay from "@/components/TimeDisplay";
+import { useWeather } from '@/hooks/useWeather'
+import { Search } from "lucide-react";
 
 function getSearchUrl(engine, query) {
   const encoded = encodeURIComponent(query);
@@ -19,13 +23,18 @@ function getSearchUrl(engine, query) {
 
 function Home({ onOpenSettings }) {
   const settings = getUserSettings();
+  const weather = useWeather();
   const [query, setQuery] = useState("");
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (query.trim()) {
       const url = getSearchUrl(settings?.searchEngine, query);
-      window.open(url, "_blank");
+      if (settings?.newTab) {
+        window.open(url, "_blank");
+      } else {
+        window.location.href = url;
+      }
       setQuery("");
     }
   };
@@ -38,68 +47,55 @@ function Home({ onOpenSettings }) {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Hoş Geldin 👋</h1>
+    <AppLayout>
+      <Header favorites={settings?.favorites} target={settings?.openFavoritesInNewTab} onOpenSettings={onOpenSettings} weather={weather} />
 
-      {/* Arama kutusu */}
-      <form onSubmit={handleSearch} className="mb-6">
-        <input
-          type="text"
-          placeholder="Web'de ara..."
-          value={query}
-          autoFocus
-          onChange={(e) => setQuery(e.target.value)}
-          className="border p-2 rounded w-3/4"
-        />
-        <button
-          type="submit"
-          className="ml-2 bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Ara
-        </button>
-      </form>
+      {/* Tabs */}
 
-      <p>Seçilen Arama Motoru: {settings?.searchEngine}</p>
 
-      <div className="mt-4">
-        <h2 className="font-semibold mb-2">Favori Linkler</h2>
-        <ul className="list-disc pl-4">
-          {settings?.favorites?.map((fav, index) => (
-            <li key={index} className="flex items-center gap-2 mb-2">
-              <img
-                src={getFaviconUrl(fav.url)}
-                alt=""
-                className="w-5 h-5"
-                onError={(e) => (e.target.style.display = "none")}
-              />
-              <a
-                href={fav.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline"
-              >
-                {fav.title || fav.url}
-              </a>
-            </li>
-          ))}
-        </ul>
+      <div className="flex items-center justify-center text-center mt-12">
+        <TimeDisplay showSeconds={settings?.showSeconds} />
       </div>
 
-      <div className="flex gap-4 mt-6">
+      {/* 🔍 Arama Kutusu */}
+      <div className="flex flex-col gap-4 items-center justify-center mt-12">
+        <form onSubmit={handleSearch} className="flex flex-col items-center justify-center max-w-full w-xl relative">
+          <input
+            type="text"
+            placeholder="Web'de ara..."
+            value={query}
+            autoFocus
+            onChange={(e) => setQuery(e.target.value)}
+            className="peer border border-white/20 px-4 h-14 w-full backdrop-blur-lg rounded-full text-black placeholder:text-white/50 focus:placeholder:text-black/50 focus:bg-white/70 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#7229d9] transition-all font-medium"
+          />
+          <button
+            type="submit"
+            className="z-10 absolute right-1.5 top-1/2 -mt-5.5 w-11 h-11 rounded-full bg-white text-black flex items-center justify-center cursor-pointer active:scale-90 transition-transform focus:outline-none peer-focus:bg-[#7229d9] peer-focus:text-white"
+          >
+            <Search className="size-4" />
+          </button>
+        </form>
+        <p className="text-white/80 text-sm">
+          Seçilen Arama Motoru: <strong className="text-white">{settings?.searchEngine?.charAt(0).toUpperCase() + settings?.searchEngine?.slice(1)}</strong>
+        </p>
+      </div>
+
+      {/* ⚙️ Ayar butonları */}
+      <div className="flex items-center justify-center gap-4 mt-6">
         <button
           onClick={onOpenSettings}
-          className="bg-yellow-500 text-white px-4 py-2 rounded"
+          className="bg-white/5 text-white px-5 border border-white/10 h-10 text-sm rounded-lg hover:bg-white/10 backdrop-blur-lg cursor-pointer transition-all active:scale-95 focus:outline-none select-none font-medium"
         >
           Ayarları Düzenle
         </button>
         <button
           onClick={handleReset}
-          className="bg-red-500 text-white px-4 py-2 rounded"
+          className="bg-white/5 text-white px-5 border border-white/10 h-10 text-sm rounded-lg hover:bg-white/10 backdrop-blur-lg cursor-pointer transition-all active:scale-95 focus:outline-none select-none font-medium"
         >
           Ayarları Sıfırla
         </button>
       </div>
-    </div>
+    </AppLayout>
   );
 }
 

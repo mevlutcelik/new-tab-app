@@ -246,16 +246,17 @@ export function LiquidGlass({
 
   const transformStyle = isJiggling
     ? ({
-        "--wobble-start-x": `${wobbleOffset.x}px`,
-        "--wobble-start-y": `${wobbleOffset.y}px`,
-      } as React.CSSProperties)
+      "--wobble-start-x": `${wobbleOffset.x}px`,
+      "--wobble-start-y": `${wobbleOffset.y}px`,
+    } as React.CSSProperties)
     : {
-        transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) ${isDragging ? "scale(1.02)" : ""}`,
-        transition: isDragging ? "none" : "transform 0.3s cubic-bezier(0.23, 1, 0.32, 1)",
-      }
+      transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) ${isDragging ? "scale(1.02)" : ""}`,
+      transition: isDragging ? "none" : "transform 0.3s cubic-bezier(0.23, 1, 0.32, 1)",
+    }
 
   return (
     <div
+      tabIndex={0} role='button'
       ref={elementRef}
       className={`
         ${getVariantClasses()}
@@ -275,6 +276,12 @@ export function LiquidGlass({
       }}
       onMouseEnter={handleMouseEnter}
       onClick={handleClick}
+      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault(); // Space tuşunda sayfa kaymasını engeller
+          handleClick();
+        }
+      }}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -318,6 +325,6 @@ export function LiquidGlass({
       <div className="relative z-10">{children}</div>
 
       <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none z-5" />
-    </div>
+    </div >
   )
 }
