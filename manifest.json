@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Yeni Sekme Uygulaması",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "Yeni sekme için özel arayüz",
   "permissions": [
     "bookmarks"

@@ -1,7 +1,7 @@
 // src/pages/Settings.jsx
 import React, { useState, useEffect } from "react";
-import { getUserSettings, setUserSettings } from "../lib/storage";
-import { isValidUrl, normalizeUrl, getFaviconUrl } from "../utils/validators";
+import { getUserSettings, setUserSettings, resetSettings } from "@/lib/storage";
+import { isValidUrl, normalizeUrl, getFaviconUrl } from "@/utils/validators";
 
 function Settings({ onBack }) {
   const [searchEngine, setSearchEngine] = useState("google");
@@ -10,6 +10,13 @@ function Settings({ onBack }) {
   const [newTab, setNewTab] = useState(true);
   const [errors, setErrors] = useState({});
   const [openFavoritesInNewTab, setOpenFavoritesInNewTab] = useState(true);
+
+  const handleReset = () => {
+      if (confirm("Tüm ayarları sıfırlamak istiyor musunuz?")) {
+        resetSettings();
+        window.location.reload();
+      }
+    };
 
   useEffect(() => {
     const settings = getUserSettings();
@@ -188,16 +195,24 @@ function Settings({ onBack }) {
       <div className="flex gap-4 mt-6">
         <button
           onClick={handleSave}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700 transition-all active:scale-95 focus:outline-none select-none font-medium"
         >
           Kaydet
         </button>
         <button
           onClick={onBack}
-          className="bg-gray-400 text-white px-4 py-2 rounded"
+          className="bg-gray-400 text-white px-4 py-2 rounded cursor-pointer hover:bg-gray-500 transition-all active:scale-95 focus:outline-none select-none font-medium"
         >
           Geri Dön
         </button>
+
+        <button
+          onClick={handleReset}
+          className="bg-red-600 text-white px-5 h-10 text-sm rounded hover:bg-red-700 cursor-pointer transition-all active:scale-95 focus:outline-none select-none font-medium"
+        >
+          Ayarları Sıfırla
+        </button>
+
       </div>
     </div>
   );

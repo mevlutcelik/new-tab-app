@@ -5,7 +5,7 @@ import { isValidUrl, normalizeUrl, getFaviconUrl } from "@/utils/validators";
 
 function Setup() {
   const [searchEngine, setSearchEngine] = useState("google");
-  const [favorites, setFavorites] = useState([{ url: "", title: "" }]);
+  const [favorites, setFavorites] = useState([]);
   const [showSeconds, setShowSeconds] = useState(false);
   const [newTab, setNewTab] = useState(true);
   const [errors, setErrors] = useState({});
