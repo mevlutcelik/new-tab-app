@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useState } from "react";
 import { getUserSettings, resetSettings } from "@/lib/storage";
 import AppLayout from "@/layouts/AppLayout";
 import Header from "@/layouts/Header";
@@ -12,51 +12,13 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { stations } from "@/lib/stations";
-import { LiquidButton } from '@/components/liquid-button'
-import { LiquidGlass } from '@/components/liquid-glass'
-import { Plane, Bluetooth, Wifi, Moon } from 'lucide-react'
+import { useAudio } from "@/contexts/AudioContext";
 
-const buttons = [
-  {
-    id: 'airplane',
-    icon: Plane,
-    label: 'Airplane Mode',
-    activeBackground:
-      'linear-gradient(135deg, rgba(249, 115, 22, 0.7) 0%, rgba(234, 88, 12, 0.7) 100%)',
-    activeBorder: 'rgba(251, 146, 60, 0.8)',
-
-  },
-  {
-    id: 'airdrop',
-    icon: Bluetooth,
-    label: 'AirDrop',
-    activeBackground:
-      'linear-gradient(135deg, rgba(59, 130, 246, 0.7) 0%, rgba(37, 99, 235, 0.7) 100%)',
-    activeBorder: 'rgba(96, 165, 250, 0.8)',
-  },
-  {
-    id: 'wifi',
-    icon: Wifi,
-    label: 'Wi-Fi',
-    activeBackground:
-      'linear-gradient(135deg, rgba(59, 130, 246, 0.7) 0%, rgba(37, 99, 235, 0.7) 100%)',
-    activeBorder: 'rgba(96, 165, 250, 0.8)',
-  },
-  {
-    id: 'dnd',
-    icon: Moon,
-    label: 'Do Not Disturb',
-    activeBackground:
-      'linear-gradient(135deg, rgba(168, 85, 247, 0.7) 0%, rgba(147, 51, 234, 0.7) 100%)',
-    activeBorder: 'rgba(196, 181, 253, 0.8)',
-  },
-]
-
-function Home({ onOpenSettings, selectedStation, isPlaying, onTogglePlay }) {
+function Home({ onOpenSettings }) {
+  const { selectedStation, isPlaying, togglePlay } = useAudio();
   const settings = getUserSettings();
   const weather = useWeather();
   const [query, setQuery] = useState("");
-  const audioRef = useRef(null);
   const [stationQuery, setStationQuery] = useState("");
 
   const handleSearch = (e) => {
@@ -154,10 +116,9 @@ function Home({ onOpenSettings, selectedStation, isPlaying, onTogglePlay }) {
                 {filteredStations.map((station, index) => {
                   const isActive = selectedStation?.url === station.url && isPlaying;
                   return (
-                    <>
+                    <React.Fragment key={index}>
                       <div
-                        key={index}
-                        onClick={() => onTogglePlay(station)}
+                      onClick={() => togglePlay(station)}
                         className={`cursor-pointer rounded-lg p-4 border transition-all backdrop-blur-lg select-none
         ${isActive ? 'bg-green-500/30 border-green-400 scale-105 shadow-lg' : 'bg-white/5 border-white/10 hover:bg-white/10'}
       `}
@@ -173,12 +134,12 @@ function Home({ onOpenSettings, selectedStation, isPlaying, onTogglePlay }) {
                         stretchOnDrag={false}
                         key={index}
                         className={`cursor-pointer rounded-lg p-4 border backdrop-blur-lg select-none !transition-all ${isActive && '!bg-green-500/30 !border-green-400 scale-105 shadow-lg'}`}
-                        onClick={() => onTogglePlay(station)}
+                        onClick={() => togglePlay(station)}
                       >
                         <h3 className="text-lg font-semibold">{station.name}</h3>
                         <p className="text-sm opacity-70">{isActive ? "Çalıyor..." : "Tıklayarak dinle"}</p>
                       </LiquidGlass>*/}
-                    </>
+                    </React.Fragment>
                   );
                 })}
               </div>
@@ -186,15 +147,6 @@ function Home({ onOpenSettings, selectedStation, isPlaying, onTogglePlay }) {
           </TabsContent>
         </Tabs>
       </div>
-
-      {/* Görünmeyen audio player */}
-      {selectedStation?.url && (
-        <audio
-          ref={audioRef}
-          src={selectedStation.url}
-          style={{ display: "none" }}
-        />
-      )}
     </AppLayout>
   );
 }
