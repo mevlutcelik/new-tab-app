@@ -57,7 +57,7 @@ export const PinnedButton = ({ label, url, onRemove, onEdit }) => {
               <Globe size={32} className="text-neutral-400" />
             )}
           </div>
-          <span className="text-xs font-medium text-neutral-400 group-hover:text-neutral-600 group-focus:text-neutral-600 transition-all">{label}</span>
+          <span className="text-xs font-medium text-neutral-400 group-hover:text-neutral-600 group-focus:text-neutral-600 transition-all max-w-16 truncate">{label}</span>
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
