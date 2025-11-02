@@ -1,9 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Yeni Sekme Uygulaması",
-  "version": "1.0.24",
+  "name": "NewTab Uygulaması",
+  "version": "2.0.0",
   "description": "Yeni sekme için özel arayüz",
   "permissions": [
+    "history",
+    "tabs",
     "bookmarks"
   ],
   "chrome_url_overrides": {
