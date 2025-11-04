@@ -25,7 +25,7 @@ export const CalendarCard = () => {
     const year = currentDate.getFullYear();
 
     // Pazar ve Cumartesi için kırmızı renk
-    const isDayOff = currentDate.getDay() === 0 || currentDate.getDay() === 6;
+    // const isDayOff = currentDate.getDay() === 0 || currentDate.getDay() === 6;
 
     return (
         <div className="sm:col-span-1 flex flex-col justify-center gap-4 rounded-3xl w-full p-4 mx-auto bg-white border cursor-text shadow-md">
@@ -34,7 +34,7 @@ export const CalendarCard = () => {
                 <span className="ml-2 text-sm font-light text-neutral-500 tracking-tighter">BUGÜNÜN TARİHİ</span>
             </div>
             <div className="bg-neutral-50 border rounded-2xl p-4 h-48 flex flex-col items-center justify-center gap-1">
-                <div className={`text-base font-medium ${isDayOff ? "text-red-700" : "text-neutral-700"}`}>
+                <div className={`text-base font-medium text-red-700`}>
                     {dayName}
                 </div>
                 <div className="text-neutral-700 text-6xl font-thin">{dayNumber}</div>

@@ -15,6 +15,9 @@
     "default_title": "Yeni Sekme"
   },
   "host_permissions": [
-    "https://api.openweathermap.org/*"
+    "https://api.openweathermap.org/*",
+    "https://translate.google.com/",
+    "https://www.youtube.com/*",
+    "https://mehasoft.com.tr/*"
   ]
 }

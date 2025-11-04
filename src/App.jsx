@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import CustomCommand from "@/components/CustomCommand";
+import { MehasoftAi } from "@/components/MehasoftAi";
 import { PinnedButton } from "@/components/PinnedButton";
 import { PinnedAddButton } from "../components/PinnedButton";
 import { useState, useEffect } from "react";
@@ -27,6 +28,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { TodoCard } from "../components/cards/Todo";
 import { CalendarCard } from "../components/cards/Calendar";
+import { TranslateCard } from "../components/cards/Translate";
+import { MusicCard } from "../components/cards/Music";
 
 const MAX_PINNED_ITEMS = 9;
 const STORAGE_KEY = "pinnedButtons";
@@ -126,21 +129,44 @@ function App() {
     setIsAddDialogOpen(true);
   };
 
+  const handleMoveUp = (id) => {
+    const index = pinnedItems.findIndex((item) => item.id === id);
+    if (index > 0) {
+      const newItems = [...pinnedItems];
+      [newItems[index - 1], newItems[index]] = [newItems[index], newItems[index - 1]];
+      savePinnedItems(newItems);
+    }
+  };
+
+  const handleMoveDown = (id) => {
+    const index = pinnedItems.findIndex((item) => item.id === id);
+    if (index < pinnedItems.length - 1) {
+      const newItems = [...pinnedItems];
+      [newItems[index], newItems[index + 1]] = [newItems[index + 1], newItems[index]];
+      savePinnedItems(newItems);
+    }
+  };
+
   return (
     <>
       <div className="bg-linear-to-b from-blue-200 to-white min-h-screen flex flex-col p-12 select-none">
-        <div className="flex flex-col gap-12 w-full max-w-3xl mx-auto">
-          <div>
+        <div className="flex flex-col gap-12 w-full max-w-4xl mx-auto">
+          <div className="flex items-center justify-center gap-4">
             <CustomCommand />
+            <MehasoftAi />
           </div>
           <div className="flex items-center justify-center gap-6 flex-wrap">
-            {pinnedItems.map((item) => (
+            {pinnedItems.map((item, index) => (
               <PinnedButton
                 key={item.id}
                 label={item.label}
                 url={item.url}
                 onRemove={() => handleRemoveItem(item.id)}
                 onEdit={() => handleOpenEditDialog(item)}
+                onMoveUp={() => handleMoveUp(item.id)}
+                onMoveDown={() => handleMoveDown(item.id)}
+                isFirst={index === 0}
+                isLast={index === pinnedItems.length - 1}
               />
             ))}
             {pinnedItems.length < MAX_PINNED_ITEMS && (
@@ -279,12 +305,18 @@ function App() {
             </DialogContent>
           </Dialog>
 
-          <div className="grid sm:grid-cols-3 gap-4">
-            <CalendarCard />
-            <TodoCard />
+          <div className="flex flex-col gap-6">
+            <div className="grid sm:grid-cols-3 gap-6">
+              <CalendarCard />
+              <TodoCard />
+            </div>
+            <div className="grid sm:grid-cols-3 gap-6">
+              <TranslateCard />
+              <MusicCard />
+            </div>
           </div>
 
-          <div>
+          {/* <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button variant="outline">Open</button>
@@ -339,7 +371,7 @@ function App() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

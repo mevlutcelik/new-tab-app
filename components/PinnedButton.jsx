@@ -1,13 +1,14 @@
-import { Globe, Plus, Pencil, Trash2 } from "lucide-react";
+import { Globe, Plus, Pencil, Trash2, ArrowUp, ArrowDown } from "lucide-react";
 import { useState } from "react";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
+  ContextMenuSeparator,
 } from "@/components/ui/context-menu";
 
-export const PinnedButton = ({ label, url, onRemove, onEdit }) => {
+export const PinnedButton = ({ label, url, onRemove, onEdit, onMoveUp, onMoveDown, isFirst, isLast }) => {
   const [imageError, setImageError] = useState(false);
   const faviconUrl = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=256`;
 
@@ -61,6 +62,19 @@ export const PinnedButton = ({ label, url, onRemove, onEdit }) => {
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
+        {!isFirst && onMoveUp && (
+          <ContextMenuItem onClick={onMoveUp}>
+            <ArrowUp size={16} className="mr-2" />
+            Üste Taşı
+          </ContextMenuItem>
+        )}
+        {!isLast && onMoveDown && (
+          <ContextMenuItem onClick={onMoveDown}>
+            <ArrowDown size={16} className="mr-2" />
+            Alta Taşı
+          </ContextMenuItem>
+        )}
+        {(!isFirst || !isLast) && (onEdit || onRemove) && <ContextMenuSeparator />}
         {onEdit && (
           <ContextMenuItem onClick={onEdit}>
             <Pencil size={16} className="mr-2" />

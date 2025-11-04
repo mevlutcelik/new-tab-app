@@ -24,25 +24,28 @@ export default function CustomCommand() {
   const listRef = useRef(null);
   const abortControllerRef = useRef(null);
 
-  const items = [
-    { id: 1, title: "Anasayfa", url: "/", icon: <Home size={18} /> },
-    { id: 2, title: "Projeler", url: "/projects", icon: <Boxes size={18} /> },
-    { id: 3, title: "Sertifikalar", url: "/certificates", icon: <Award size={18} /> },
-    { id: 4, title: "GitHub", url: "https://github.com/mevlutcelik", icon: <Github size={18} />, external: true },
-    { id: 5, title: "LinkedIn", url: "https://www.linkedin.com/in/mevlutcelik", icon: <Linkedin size={18} />, external: true },
-  ];
+  // const items = [
+  //   { id: 1, title: "Anasayfa", url: "/", icon: <Home size={18} /> },
+  //   { id: 2, title: "Projeler", url: "/projects", icon: <Boxes size={18} /> },
+  //   { id: 3, title: "Sertifikalar", url: "/certificates", icon: <Award size={18} /> },
+  //   { id: 4, title: "GitHub", url: "https://github.com/mevlutcelik", icon: <Github size={18} />, external: true },
+  //   { id: 5, title: "LinkedIn", url: "https://www.linkedin.com/in/mevlutcelik", icon: <Linkedin size={18} />, external: true },
+  // ];
+
+  const items = [];
 
   // Kısayol: Ctrl+K veya /
   useEffect(() => {
     const handler = (e) => {
       // Eğer input, textarea veya contenteditable içinde yazıyorsak, kısayolu tetikleme
       const target = e.target;
-      const isEditing = target.tagName === 'INPUT' || 
-                       target.tagName === 'TEXTAREA' || 
-                       target.isContentEditable;
-      
+      const isEditing = target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.isContentEditable;
+
       if (!open && !isEditing && (((e.key === "k" || e.key === "K") && (e.ctrlKey || e.metaKey)) || e.key === "/")) {
         e.preventDefault();
+        setQuery("");
         setOpen(true);
       }
     };
@@ -201,16 +204,42 @@ export default function CustomCommand() {
   const isValidUrl = useCallback((str) => {
     if (!str) return false;
 
-    // Sadece "google" gibi kelimeler URL değil, tam domain olmalı
-    const urlPattern = /^(https?:\/\/)|(www\.)|([a-zA-Z0-9-]+\.[a-zA-Z]{2,})/;
-    if (!urlPattern.test(str)) return false;
+    // Eğer boşluk varsa kesinlikle URL değil, arama sorgusu
+    if (str.includes(' ')) return false;
 
-    try {
-      new URL(str.startsWith('http') ? str : `https://${str}`);
-      return true;
-    } catch {
-      return false;
+    // http:// veya https:// ile başlıyorsa URL
+    if (str.startsWith('http://') || str.startsWith('https://')) {
+      try {
+        new URL(str);
+        return true;
+      } catch {
+        return false;
+      }
     }
+
+    // www. ile başlıyorsa URL
+    if (str.startsWith('www.')) {
+      try {
+        new URL(`https://${str}`);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    // domain.com veya domain.com.tr formatında olmalı
+    // İki parçalı TLD'leri de destekler: .com.tr, .co.uk, .gov.au vb.
+    const domainPattern = /^[a-zA-Z0-9][a-zA-Z0-9-]*(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?([\/\?#].*)?$/;
+    if (domainPattern.test(str)) {
+      try {
+        new URL(`https://${str}`);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    return false;
   }, []);
 
   const googleSearchUrl = useCallback((q) =>
@@ -220,7 +249,7 @@ export default function CustomCommand() {
   // Fuse instance memoization - performance optimization
   const allItems = useMemo(() => {
     const combined = [...items, ...historyItems, ...bookmarkItems];
-    
+
     // Remove duplicates based on URL and regenerate unique IDs
     const uniqueMap = new Map();
     combined.forEach(item => {
@@ -228,12 +257,12 @@ export default function CustomCommand() {
         uniqueMap.set(item.url, item);
       }
     });
-    
+
     const uniqueItems = Array.from(uniqueMap.values()).map((item, index) => ({
       ...item,
       uniqueId: `item-${index}-${item.url}` // Ensure truly unique ID for React key
     }));
-    
+
     return uniqueItems;
   }, [items, historyItems, bookmarkItems]);
 
@@ -256,7 +285,7 @@ export default function CustomCommand() {
     // Query varsa Fuse ile ara
     const results = fuse.search(query.trim());
     const items = results.map(r => r.item);
-    
+
     // Additional deduplication by title AND URL
     // If same title, keep only the first one
     const uniqueMap = new Map();
@@ -268,7 +297,7 @@ export default function CustomCommand() {
         uniqueMap.set(key, item);
       }
     });
-    
+
     const uniqueItems = Array.from(uniqueMap.values());
     return uniqueItems;
   }, [query, fuse, allItems]);
@@ -297,7 +326,7 @@ export default function CustomCommand() {
       <div
         tabIndex={0}
         role="button"
-        className="flex items-center justify-between h-12 rounded-xl w-full p-4 max-w-xl mx-auto bg-white border cursor-text shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-600"
+        className="flex items-center justify-between h-12 rounded-xl w-full p-4 max-w-xl bg-white border cursor-text shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-600"
         onClick={() => {
           setQuery("");
           setOpen(true);
@@ -312,7 +341,7 @@ export default function CustomCommand() {
       >
         <div className="flex items-center gap-3">
           <Search size={16} className="text-neutral-400" />
-          <span className="text-neutral-400">Bir şeyler yazın...</span>
+          <span className="text-neutral-400">Ara veya url gir...</span>
         </div>
         <KbdGroup>
           <Kbd>/</Kbd>
@@ -323,7 +352,7 @@ export default function CustomCommand() {
 
       <CommandDialog open={open} onOpenChange={setOpen} shouldFilter={false}>
         <CommandInput
-          placeholder="Bir şeyler ara..."
+          placeholder="Ara veya url gir..."
           value={query}
           onValueChange={setQuery}
           autoFocus
@@ -343,21 +372,10 @@ export default function CustomCommand() {
             </div>
           )}
 
-          {!isLoading && !error && filteredItems.length > 0 && (
-            <CommandGroup heading="Sonuçlar">
-              {filteredItems.map(item => (
-                <CommandItem key={item.uniqueId || item.id} onSelect={() => handleClick(item)}>
-                  {renderIcon(item)}
-                  <span className="ml-2 line-clamp-1">{item.title}</span>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          )}
-
           {/* Google search veya URL - Her zaman query varsa göster */}
           {!isLoading && !error && query.trim() && (
             <CommandGroup heading="Web Araması">
-              <CommandItem 
+              <CommandItem
                 onSelect={handleSearch}
                 className="cursor-pointer"
               >
@@ -368,6 +386,17 @@ export default function CustomCommand() {
                     : `Google'da ara: ${query.trim()}`}
                 </span>
               </CommandItem>
+            </CommandGroup>
+          )}
+
+          {!isLoading && !error && filteredItems.length > 0 && (
+            <CommandGroup heading="Sonuçlar">
+              {filteredItems.map(item => (
+                <CommandItem key={item.uniqueId || item.id} onSelect={() => handleClick(item)}>
+                  {renderIcon(item)}
+                  <span className="ml-2 line-clamp-1">{item.title}</span>
+                </CommandItem>
+              ))}
             </CommandGroup>
           )}
         </CommandList>
