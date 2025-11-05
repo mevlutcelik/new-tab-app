@@ -1,11 +1,14 @@
 {
   "name": "new-tab-app",
   "private": true,
-  "version": "2.0.0",
+  "version": "2.1.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp ./manifest.json ./dist/manifest.json",
+    "build": "node increment-version.js --patch && vite build && cp ./manifest.json ./dist/manifest.json",
+    "build:patch": "node increment-version.js --patch && vite build && cp ./manifest.json ./dist/manifest.json",
+    "build:minor": "node increment-version.js --minor && vite build && cp ./manifest.json ./dist/manifest.json",
+    "build:major": "node increment-version.js --major && vite build && cp ./manifest.json ./dist/manifest.json",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -16,6 +19,7 @@
     "@radix-ui/react-context-menu": "^2.2.16",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
+    "@radix-ui/react-visually-hidden": "^1.2.4",
     "@tailwindcss/vite": "^4.1.16",
     "@vitalets/google-translate-api": "^9.2.1",
     "class-variance-authority": "^0.7.1",

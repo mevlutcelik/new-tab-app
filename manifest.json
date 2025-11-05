@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NewTab Uygulaması",
-  "version": "2.0.0",
+  "version": "2.1.4",
   "description": "Yeni sekme için özel arayüz",
   "permissions": [
     "history",
