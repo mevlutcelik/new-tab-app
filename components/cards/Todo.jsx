@@ -226,7 +226,7 @@ const SortableTodoItem = ({
                         {hasSubtasks && (
                             <button
                                 onClick={() => toggleExpanded(todo.id)}
-                                className="mt-0.5 text-neutral-500 hover:text-neutral-700 transition-all"
+                                className="mt-0.5 text-neutral-500 hover:text-neutral-700 transition-all cursor-pointer"
                             >
                                 {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                             </button>
