@@ -1,8 +1,9 @@
-import { Bot, Send, Loader2, Sparkles, Sparkle, Trash2, X, User, Copy, Check, Edit2 } from "lucide-react";
+import { Bot, Send, Loader2, Sparkles, Sparkle, Trash2, X, User, Copy, Check, Edit2, ExternalLink } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { callGeminiAPI, processAgentActions } from "@/lib/geminiService";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const CHAT_HISTORY_KEY = "mehasoftAiChatHistory";
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
@@ -67,8 +68,12 @@ export const MehasoftAi = () => {
 
         try {
             const response = await callGeminiAPI(userMessage, messages, GEMINI_API_KEY);
-            const processedResponse = processAgentActions(response);
-            setMessages([...newMessages, { role: "assistant", content: processedResponse }]);
+            const result = processAgentActions(response);
+            setMessages([...newMessages, { 
+                role: "assistant", 
+                content: result.text,
+                actions: result.actions 
+            }]);
         } catch (error) {
             console.error("Error calling Gemini API:", error);
             setMessages([...newMessages, { role: "assistant", content: `❌ Hata: ${error.message}` }]);
@@ -117,8 +122,12 @@ export const MehasoftAi = () => {
             try {
                 const historyForApi = messagesToKeep.slice(0, -1);
                 const response = await callGeminiAPI(editingText.trim(), historyForApi, GEMINI_API_KEY);
-                const processedResponse = processAgentActions(response);
-                setMessages([...messagesToKeep, { role: "assistant", content: processedResponse }]);
+                const result = processAgentActions(response);
+                setMessages([...messagesToKeep, { 
+                    role: "assistant", 
+                    content: result.text,
+                    actions: result.actions 
+                }]);
             } catch (error) {
                 console.error("Error calling Gemini API:", error);
                 setMessages([...messagesToKeep, { role: "assistant", content: `❌ Hata: ${error.message}` }]);
@@ -149,6 +158,12 @@ export const MehasoftAi = () => {
             </button>
             
             <DialogContent className="w-full max-w-2xl h-[600px] flex flex-col p-0 gap-0" showCloseButton={false}>
+                <VisuallyHidden>
+                    <DialogTitle>Mehasoft AI - Yapay Zeka Asistanı</DialogTitle>
+                    <DialogDescription>
+                        Mehasoft AI ile sohbet edin, sorularınızı sorun ve yardım alın
+                    </DialogDescription>
+                </VisuallyHidden>
                 <div className="flex items-center justify-between px-6 py-4 border-b">
                     <div className="flex items-center gap-3">
                         <div className="p-3 bg-white rounded-lg border border-neutral-200">
@@ -235,6 +250,24 @@ export const MehasoftAi = () => {
                                                 <MarkdownRenderer content={msg.content} />
                                             )}
                                         </div>
+                                        
+                                        {/* Onay gerektiren URL'ler için butonlar */}
+                                        {msg.role === "assistant" && msg.actions && msg.actions.length > 0 && (
+                                            <div className="flex flex-wrap gap-2 mt-2">
+                                                {msg.actions.map((action, actionIdx) => (
+                                                    <button
+                                                        key={actionIdx}
+                                                        onClick={() => window.open(action.url, '_blank', 'noopener,noreferrer')}
+                                                        className="flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors cursor-pointer"
+                                                        title={`${action.siteName} sitesini aç`}
+                                                    >
+                                                        <ExternalLink size={14} />
+                                                        <span>{action.siteName} sitesini aç</span>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                        
                                         <div className="flex gap-1">
                                             {msg.role === "assistant" && (
                                                 <button
@@ -293,21 +326,37 @@ export const MehasoftAi = () => {
                     <div ref={messagesEndRef} />
                 </div>
                 <div className="border-t px-6 py-4">
-                    <div className="flex items-center gap-2">
-                        <input
+                    <div className="flex items-end gap-2">
+                        <textarea
                             ref={inputRef}
-                            type="text"
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyDown={(e) => {
-                                if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSendMessage(); }
+                                if (e.key === "Enter" && !e.shiftKey) { 
+                                    e.preventDefault(); 
+                                    handleSendMessage(); 
+                                }
                                 if (e.key === "Escape") setIsOpen(false);
                             }}
-                            placeholder="Mesajınızı yazın..."
+                            placeholder="Mesajınızı yazın... (Enter: gönder, Shift+Enter: yeni satır)"
                             disabled={isLoading}
-                            className="flex-1 px-4 h-12 text-sm border rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-all"
+                            rows={1}
+                            className="flex-1 px-4 py-3 text-sm border rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-all resize-none min-h-12 max-h-[200px] overflow-y-auto"
+                            style={{
+                                height: 'auto',
+                                minHeight: '48px',
+                            }}
+                            onInput={(e) => {
+                                e.target.style.height = 'auto';
+                                e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
+                            }}
                         />
-                        <button onClick={handleSendMessage} disabled={!inputValue.trim() || isLoading} className="size-12 inline-flex items-center justify-center bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" title="Gönder">
+                        <button 
+                            onClick={handleSendMessage} 
+                            disabled={!inputValue.trim() || isLoading} 
+                            className="size-12 shrink-0 inline-flex items-center justify-center bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" 
+                            title="Gönder (Enter)"
+                        >
                             <Send size={20} />
                         </button>
                     </div>
