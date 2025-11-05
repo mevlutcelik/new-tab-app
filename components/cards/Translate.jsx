@@ -1,4 +1,4 @@
-import { Languages, ArrowRight, Loader2 } from "lucide-react";
+import { Languages, ArrowRight, Loader2, X, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { translate } from '@vitalets/google-translate-api';
 
@@ -53,6 +53,13 @@ export const TranslateCard = () => {
         }
     };
 
+    const clearAll = () => {
+        setSourceText("");
+        setTranslatedText("");
+        setDetectedLanguage("");
+        setError("");
+    };
+
     return (
         <div className="sm:col-span-2 flex flex-col justify-center gap-4 rounded-3xl w-full p-4 mx-auto bg-white border cursor-text shadow-md">
             <div className="flex items-center justify-between gap-1">
@@ -60,17 +67,29 @@ export const TranslateCard = () => {
                     <Languages strokeWidth={1.75} size={16} className="text-neutral-500 mb-0.5" />
                     <span className="ml-2 text-sm font-light text-neutral-500 tracking-tighter">ÇEVİRİ</span>
                 </div>
-                <select
-                    value={targetLang}
-                    onChange={(e) => setTargetLang(e.target.value)}
-                    className="px-3 py-1.5 text-xs border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer bg-white"
-                >
-                    {languages.map((lang) => (
-                        <option key={lang.code} value={lang.code}>
-                            {lang.name}
-                        </option>
-                    ))}
-                </select>
+                <div className="flex items-center gap-2">
+                    {(sourceText || translatedText) && (
+                        <button
+                            onClick={clearAll}
+                            className="flex items-center gap-1 px-2 py-1.5 text-neutral-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                            title="Temizle"
+                        >
+                            <Trash2 size={14} />
+                            <span className="text-xs">Temizle</span>
+                        </button>
+                    )}
+                    <select
+                        value={targetLang}
+                        onChange={(e) => setTargetLang(e.target.value)}
+                        className="px-3 py-1.5 text-xs border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer bg-white"
+                    >
+                        {languages.map((lang) => (
+                            <option key={lang.code} value={lang.code}>
+                                {lang.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             <div className="bg-neutral-50 border rounded-2xl p-4 flex flex-col gap-3">
@@ -118,7 +137,7 @@ export const TranslateCard = () => {
                                 {languages.find(l => l.code === targetLang)?.name}
                             </span>
                         </div>
-                        <p className="text-sm text-neutral-800 leading-relaxed">
+                        <p className="text-sm text-neutral-800 leading-relaxed whitespace-pre-wrap">
                             {translatedText}
                         </p>
                     </div>
