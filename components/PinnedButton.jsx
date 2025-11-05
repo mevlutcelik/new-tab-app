@@ -1,4 +1,4 @@
-import { Globe, Plus, Pencil, Trash2, ArrowUp, ArrowDown } from "lucide-react";
+import { Globe, Plus, Pencil, Trash2, ArrowUp, ArrowDown, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import {
   ContextMenu,
@@ -62,6 +62,11 @@ export const PinnedButton = ({ label, url, onRemove, onEdit, onMoveUp, onMoveDow
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
+        <ContextMenuItem onClick={() => window.open(url, '_blank', 'noopener,noreferrer')}>
+          <ExternalLink size={16} className="mr-2" />
+          Yeni Sekmede Aç
+        </ContextMenuItem>
+        {(!isFirst || !isLast || onEdit || onRemove) && <ContextMenuSeparator />}
         {!isFirst && onMoveUp && (
           <ContextMenuItem onClick={onMoveUp}>
             <ArrowUp size={16} className="mr-2" />
