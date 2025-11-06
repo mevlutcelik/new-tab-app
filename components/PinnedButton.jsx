@@ -39,7 +39,7 @@ export const PinnedButton = ({ label, url, onRemove, onEdit, onMoveUp, onMoveDow
           className="inline-flex flex-col items-center justify-center gap-2 group cursor-pointer outline-none"
         >
           <div
-            className="flex flex-col items-center justify-center size-16 bg-white text-neutral-900 font-semibold rounded-full shadow-md transition-all group-hover:scale-105 group-focus:scale-105 overflow-hidden"
+            className="flex flex-col items-center justify-center size-16 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-50 font-semibold rounded-full shadow-md transition-all group-hover:scale-105 group-focus:scale-105 overflow-hidden"
           >
             {!imageError ? (
               <>
@@ -58,7 +58,7 @@ export const PinnedButton = ({ label, url, onRemove, onEdit, onMoveUp, onMoveDow
               <Globe size={32} className="text-neutral-400" />
             )}
           </div>
-          <span className="text-xs font-medium text-neutral-400 group-hover:text-neutral-600 group-focus:text-neutral-600 transition-all max-w-16 truncate">{label}</span>
+          <span className="text-xs font-medium text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 group-focus:text-neutral-600 dark:group-focus:text-neutral-400 transition-all max-w-16 truncate">{label}</span>
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
@@ -87,8 +87,8 @@ export const PinnedButton = ({ label, url, onRemove, onEdit, onMoveUp, onMoveDow
           </ContextMenuItem>
         )}
         {onRemove && (
-          <ContextMenuItem onClick={onRemove} className="text-red-600 focus:text-red-600">
-            <Trash2 size={16} className="mr-2" />
+          <ContextMenuItem onClick={onRemove} className="text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400">
+            <Trash2 size={16} className="mr-2 text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400" />
             Sil
           </ContextMenuItem>
         )}
@@ -103,11 +103,11 @@ export const PinnedAddButton = ({ onClick }) => {
       onClick={onClick}
       className="inline-flex flex-col items-center justify-center gap-2 group focus:outline-none">
       <div
-        className="flex flex-col items-center justify-center size-16 border border-dashed border-neutral-400 group-hover:border-neutral-600 group-focus:border-neutral-600 text-neutral-400 group-hover:text-neutral-600 group-focus:text-neutral-600 font-semibold rounded-full transition-all group-hover:scale-105 overflow-hidden group-focus:outline-none group-focus:scale-105 cursor-pointer"
+        className="flex flex-col items-center justify-center size-16 border border-dashed border-neutral-400 dark:border-neutral-500 group-hover:border-neutral-600 dark:group-hover:border-neutral-400 group-focus:border-neutral-600 dark:group-focus:border-neutral-400 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 group-focus:text-neutral-600 dark:group-focus:text-neutral-400 font-semibold rounded-full transition-all group-hover:scale-105 overflow-hidden group-focus:outline-none group-focus:scale-105 cursor-pointer"
       >
-        <Plus size={32} className="text-neutral-400 group-focus:text-neutral-600 group-hover:text-neutral-600" />
+        <Plus size={32} className="text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 group-focus:text-neutral-600 dark:group-focus:text-neutral-400" />
       </div>
-      <span className="text-xs font-medium text-neutral-400 group-hover:text-neutral-600 group-focus:text-neutral-600 transition-all">Ekle</span>
+      <span className="text-xs font-medium text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 group-focus:text-neutral-600 dark:group-focus:text-neutral-400 transition-all">Ekle</span>
     </button>
   );
 };

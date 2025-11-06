@@ -72,13 +72,13 @@ const EmojiPickerPortal = ({ show, onClose, onEmojiClick, position }) => {
             }}
         >
             <Suspense fallback={
-                <div className="bg-white rounded-lg shadow-2xl p-4 border">
+                <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-2xl p-4 border dark:border-neutral-700">
                     <div className="flex items-center justify-center h-[400px] w-[320px]">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
                     </div>
                 </div>
             }>
-                <div className="bg-white rounded-lg shadow-2xl border overflow-hidden">
+                <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-2xl border dark:border-neutral-700 overflow-hidden">
                     {/* Türkçe-İngilizce İpuçları */}
                     {/* <div className="bg-blue-50 border-b border-blue-100 p-2 text-xs text-blue-700">
                         <div className="font-semibold mb-1">💡 Arama İpucu: İngilizce arama yapın</div>
@@ -182,9 +182,9 @@ const SortableTodoItem = ({
     return (
         <div ref={setNodeRef} style={style}>
             <div
-                className={`flex ${isExpanded ? 'items-start' : 'items-center'} gap-3 border border-neutral-200 group p-3 rounded-xl transition-all ${todo.completed
-                    ? "bg-green-50 hover:bg-green-100"
-                    : "bg-white hover:bg-neutral-100"
+                className={`flex ${isExpanded ? 'items-start' : 'items-center'} gap-3 border border-neutral-200 dark:border-neutral-600 group p-3 rounded-xl transition-all ${todo.completed
+                    ? "bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30"
+                    : "bg-white dark:bg-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-900"
                     }`}
             >
                 {editingId === todo.id ? (
@@ -198,7 +198,7 @@ const SortableTodoItem = ({
                                 if (e.key === "Enter") saveEdit();
                                 if (e.key === "Escape") cancelEdit();
                             }}
-                            className="flex-1 px-3 py-1.5 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                            className="flex-1 px-3 py-1.5 text-sm border dark:border-neutral-600 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                         />
                         <button
                             onClick={saveEdit}
@@ -208,7 +208,7 @@ const SortableTodoItem = ({
                         </button>
                         <button
                             onClick={cancelEdit}
-                            className="px-3 py-1.5 text-sm text-neutral-600 hover:text-neutral-900 transition-all cursor-pointer"
+                            className="px-3 py-1.5 text-sm text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-all cursor-pointer"
                         >
                             İptal
                         </button>
@@ -220,13 +220,13 @@ const SortableTodoItem = ({
                             {...listeners}
                             className="cursor-grab active:cursor-grabbing mt-0.5"
                         >
-                            <GripVertical size={16} className="text-neutral-400" />
+                            <GripVertical size={16} className="text-neutral-400 dark:text-neutral-500" />
                         </div>
 
                         {hasSubtasks && (
                             <button
                                 onClick={() => toggleExpanded(todo.id)}
-                                className="mt-0.5 text-neutral-500 hover:text-neutral-700 transition-all cursor-pointer"
+                                className="mt-0.5 text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-all cursor-pointer"
                             >
                                 {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                             </button>
@@ -236,7 +236,7 @@ const SortableTodoItem = ({
                             onClick={() => toggleTodo(todo.id)}
                             className={`flex items-center justify-center size-5 min-w-5 min-h-5 border-2 rounded-md transition-all cursor-pointer mt-0.5 ${todo.completed
                                 ? "bg-green-500 border-green-500 text-white"
-                                : "border-neutral-300 text-neutral-500 hover:border-green-400 hover:bg-green-50"
+                                : "border-neutral-300 dark:border-neutral-600 text-neutral-500 dark:text-neutral-400 hover:border-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
                                 }`}
                         >
                             {todo.completed && <Check size={12} strokeWidth={3} />}
@@ -248,10 +248,10 @@ const SortableTodoItem = ({
                                 <button
                                     ref={emojiButtonRef}
                                     onClick={() => setShowEmojiPicker(showEmojiPicker === todo.id ? null : todo.id)}
-                                    className="flex items-center justify-center text-base size-8 min-w-8 min-h-8 border border-dashed rounded-full transition-all cursor-pointer mt-0.5 border-transparent hover:border-neutral-300 hover:bg-white"
+                                    className="flex items-center justify-center text-base size-8 min-w-8 min-h-8 border border-dashed rounded-full transition-all cursor-pointer mt-0.5 border-transparent hover:border-neutral-300 dark:hover:border-neutral-600 hover:bg-white dark:hover:bg-neutral-600"
                                     title="Emoji ekle"
                                 >
-                                    {todo.emoji || <Smile size={16} className="text-neutral-400" />}
+                                    {todo.emoji || <Smile size={16} className="text-neutral-400 dark:text-neutral-500" />}
                                 </button>
 
                                 <EmojiPickerPortal
@@ -263,8 +263,8 @@ const SortableTodoItem = ({
 
                                 <div
                                     className={`text-sm leading-relaxed transition-all flex-1 ${todo.completed
-                                        ? "line-through text-neutral-500"
-                                        : "text-neutral-800"
+                                        ? "line-through text-neutral-500 dark:text-neutral-400"
+                                        : "text-neutral-800 dark:text-white"
                                         }`}
                                 >
                                     {todo.text}
@@ -273,7 +273,7 @@ const SortableTodoItem = ({
 
                             {/* Subtasks */}
                             {isExpanded && hasSubtasks && (
-                                <div className="mt-2 ml-2 space-y-1.5 border-l-2 border-neutral-200 pl-3">
+                                <div className="mt-2 ml-2 space-y-1.5 border-l-2 border-neutral-200 dark:border-neutral-600 pl-3">
                                     {todo.subtasks.map((subtask) => (
                                         <div key={subtask.id} className="flex items-start gap-2 group/subtask">
                                             {editingSubtask.subtaskId === subtask.id ? (
@@ -287,7 +287,7 @@ const SortableTodoItem = ({
                                                             if (e.key === "Enter") saveSubtaskEdit();
                                                             if (e.key === "Escape") cancelSubtaskEdit();
                                                         }}
-                                                        className="flex-1 px-2 py-1 text-xs border rounded outline-none focus:ring-2 focus:ring-blue-500"
+                                                        className="flex-1 px-2 py-1 text-xs border dark:border-neutral-600 rounded outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                                                     />
                                                     <button
                                                         onClick={saveSubtaskEdit}
@@ -297,7 +297,7 @@ const SortableTodoItem = ({
                                                     </button>
                                                     <button
                                                         onClick={cancelSubtaskEdit}
-                                                        className="px-2 py-1 text-xs text-neutral-600 hover:text-neutral-900 transition-all cursor-pointer"
+                                                        className="px-2 py-1 text-xs text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-all cursor-pointer"
                                                     >
                                                         İptal
                                                     </button>
@@ -308,7 +308,7 @@ const SortableTodoItem = ({
                                                         onClick={() => toggleSubtask(todo.id, subtask.id)}
                                                         className={`flex items-center justify-center size-4 min-w-4 min-h-4 border-2 rounded transition-all cursor-pointer ${subtask.completed
                                                             ? "bg-green-500 border-green-500 text-white"
-                                                            : "border-neutral-300 text-neutral-500 hover:border-green-400"
+                                                            : "border-neutral-300 dark:border-neutral-600 text-neutral-500 dark:text-neutral-400 hover:border-green-400"
                                                             }`}
                                                     >
                                                         {subtask.completed && <Check size={10} strokeWidth={3} />}
@@ -335,19 +335,19 @@ const SortableTodoItem = ({
 
                                                     <span
                                                         className={`text-xs flex-1 ${subtask.completed
-                                                            ? "line-through text-neutral-400"
-                                                            : "text-neutral-600"
+                                                            ? "line-through text-neutral-400 dark:text-neutral-500"
+                                                            : "text-neutral-600 dark:text-neutral-300"
                                                             }`}
                                                     >
                                                         {subtask.text}
                                                     </span>
                                                     <DropdownMenu>
                                                         <DropdownMenuTrigger asChild>
-                                                            <button className="opacity-0 group-hover/subtask:opacity-100 size-5 flex items-center justify-center rounded text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 transition-all cursor-pointer">
+                                                            <button className="opacity-0 group-hover/subtask:opacity-100 size-5 flex items-center justify-center rounded text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-600 transition-all cursor-pointer">
                                                                 <MoreVertical size={12} />
                                                             </button>
                                                         </DropdownMenuTrigger>
-                                                        <DropdownMenuContent className="bg-white">
+                                                        <DropdownMenuContent className="bg-white dark:bg-neutral-800 dark:border-neutral-700">
                                                             <DropdownMenuItem
                                                                 onClick={() => startEditingSubtask(todo.id, subtask)}
                                                                 className="cursor-pointer"
@@ -388,7 +388,7 @@ const SortableTodoItem = ({
                                         }}
                                         placeholder="Alt görev yazın..."
                                         autoFocus
-                                        className="flex-1 px-2 py-1 text-xs border rounded outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="flex-1 px-2 py-1 text-xs border dark:border-neutral-600 rounded outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500"
                                     />
                                     <button
                                         onClick={() => addSubtask(todo.id)}
@@ -401,7 +401,7 @@ const SortableTodoItem = ({
                                             setAddingSubtaskTo(null);
                                             setNewSubtaskText("");
                                         }}
-                                        className="px-2 py-1 text-xs text-neutral-600 hover:text-neutral-900 transition-all cursor-pointer"
+                                        className="px-2 py-1 text-xs text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-all cursor-pointer"
                                     >
                                         İptal
                                     </button>
@@ -412,12 +412,12 @@ const SortableTodoItem = ({
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <button
-                                    className="opacity-0 group-hover:opacity-100 size-6 flex items-center justify-center rounded-md text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 transition-all cursor-pointer"
+                                    className="opacity-0 group-hover:opacity-100 size-6 flex items-center justify-center rounded-md text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-600 transition-all cursor-pointer"
                                 >
                                     <MoreVertical size={16} />
                                 </button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className="bg-white">
+                            <DropdownMenuContent className="bg-white dark:bg-neutral-900">
                                 <DropdownMenuItem
                                     onClick={() => {
                                         setAddingSubtaskTo(todo.id);
@@ -736,11 +736,11 @@ export const TodoCard = () => {
     };
 
     return (
-        <div className="sm:col-span-2 overflow-hidden flex flex-col justify-center gap-4 rounded-3xl w-full mx-auto bg-white border shadow-md p-4">
+        <div className="sm:col-span-2 overflow-hidden flex flex-col justify-center gap-4 rounded-3xl w-full mx-auto bg-white dark:bg-neutral-800 border dark:border-neutral-700 shadow-md p-4">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1">
-                    <ListTodo size={16} className="text-neutral-500 mb-0.5" />
-                    <span className="ml-2 text-sm font-light text-neutral-500 tracking-tighter">YAPILACAKLAR</span>
+                    <ListTodo size={16} className="text-neutral-500 dark:text-neutral-400 mb-0.5" />
+                    <span className="ml-2 text-sm font-light text-neutral-500 dark:text-neutral-400 tracking-tighter">YAPILACAKLAR</span>
                 </div>
                 <div className="flex items-center gap-2">
                     {hasCompletedTodos && (
@@ -762,9 +762,9 @@ export const TodoCard = () => {
             </div>
             <div
                 ref={scrollContainerRef}
-                className="h-48 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-neutral-50 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 hover:[&::-webkit-scrollbar-thumb]:bg-neutral-200"
+                className="h-48 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-neutral-50 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-600 hover:[&::-webkit-scrollbar-thumb]:bg-neutral-200 dark:hover:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
             >
-                <div className={cn("bg-neutral-50 border rounded-2xl flex flex-col gap-3 mr-2", todos.length === 0 && !isAdding && "items-center justify-center h-full")}>
+                <div className={cn("bg-neutral-50 dark:bg-neutral-900 border rounded-2xl flex flex-col gap-3 mr-2", todos.length === 0 && !isAdding && "items-center justify-center h-full")}>
                     {/* Add new todo */}
                     {isAdding && (
                         <div className="flex w-full items-center gap-3 p-4 border-b">
@@ -781,7 +781,7 @@ export const TodoCard = () => {
                                 }}
                                 placeholder="Yeni görev yazın..."
                                 autoFocus
-                                className="flex-1 px-3 py-2 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                                className="flex-1 px-3 py-2 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500"
                             />
                             <button
                                 onClick={addTodo}
@@ -795,7 +795,7 @@ export const TodoCard = () => {
                                     setIsAdding(false);
                                     setNewTodoText("");
                                 }}
-                                className="px-3 py-2 text-sm text-neutral-600 hover:text-neutral-900 transition-all cursor-pointer"
+                                className="px-3 py-2 text-sm text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-all cursor-pointer"
                             >
                                 İptal
                             </button>
@@ -806,7 +806,7 @@ export const TodoCard = () => {
                     {/* Empty state */}
                     {todos.length === 0 && !isAdding && (
                         <div className="h-full flex items-center justify-center">
-                            <div className="flex flex-col items-center justify-center text-neutral-400 gap-2 p-4">
+                            <div className="flex flex-col items-center justify-center text-neutral-400 dark:text-neutral-500 gap-2 p-4">
                                 <ListTodo size={32} />
                                 <div className="text-sm">Henüz görev eklenmemiş</div>
                             </div>

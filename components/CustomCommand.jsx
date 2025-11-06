@@ -176,7 +176,7 @@ export default function CustomCommand() {
 
     // Bookmark için bookmark icon
     if (item.type === "bookmark") {
-      return <BookmarkIcon size={16} className="text-blue-500" />;
+      return <BookmarkIcon size={16} className="text-blue-500 dark:text-blue-400" />;
     }
 
     // History için favicon veya fallback
@@ -326,7 +326,7 @@ export default function CustomCommand() {
       <div
         tabIndex={0}
         role="button"
-        className="flex items-center justify-between h-12 rounded-xl w-full p-4 max-w-xl bg-white border cursor-text shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-600"
+        className="flex items-center justify-between h-12 rounded-xl w-full p-4 max-w-xl bg-white dark:bg-neutral-800 border cursor-text shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400"
         onClick={() => {
           setQuery("");
           setOpen(true);
@@ -340,13 +340,13 @@ export default function CustomCommand() {
         }}
       >
         <div className="flex items-center gap-3">
-          <Search size={16} className="text-neutral-400" />
-          <span className="text-neutral-400">Ara veya url gir...</span>
+          <Search size={16} className="text-neutral-400 dark:text-neutral-500" />
+          <span className="text-neutral-400 dark:text-neutral-500">Ara veya url gir...</span>
         </div>
         <KbdGroup>
-          <Kbd>/</Kbd>
-          <small className="text-neutral-600 text-xs">veya</small>
-          <Kbd>CTRL</Kbd> + <Kbd>K</Kbd>
+          <Kbd className="bg-neutral-50 dark:bg-neutral-700 border text-neutral-400 dark:text-neutral-500">/</Kbd>
+          <small className="text-neutral-600 dark:text-neutral-500 text-xs">veya</small>
+          <Kbd className="bg-neutral-50 dark:bg-neutral-700 border text-neutral-400 dark:text-neutral-500">CTRL</Kbd> <span className="text-neutral-600 dark:text-neutral-500 text-xs">+</span> <Kbd className="bg-neutral-50 dark:bg-neutral-700 border text-neutral-400 dark:text-neutral-500">K</Kbd>
         </KbdGroup>
       </div>
 

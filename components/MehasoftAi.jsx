@@ -151,10 +151,10 @@ export const MehasoftAi = () => {
             <button
                 onClick={() => setIsOpen(true)}
                 onKeyDown={(e) => { if (e.key === "Enter") setIsOpen(true); }}
-                className="flex group items-center justify-center size-12 rounded-xl bg-white border border-neutral-200 cursor-pointer shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="flex group items-center justify-center size-12 rounded-xl bg-white dark:bg-neutral-800 border cursor-pointer shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400"
                 title="Mehasoft AI"
             >
-                <Sparkle size={24} className="text-black group-hover:rotate-90 transition-all" />
+                <Sparkle strokeWidth={1.5} size={24} className="text-black dark:text-white group-hover:rotate-90 transition-all" />
             </button>
             
             <DialogContent className="w-full max-w-2xl h-[600px] flex flex-col p-0 gap-0" showCloseButton={false}>
@@ -166,18 +166,18 @@ export const MehasoftAi = () => {
                 </VisuallyHidden>
                 <div className="flex items-center justify-between px-6 py-4 border-b">
                     <div className="flex items-center gap-3">
-                        <div className="p-3 bg-white rounded-lg border border-neutral-200">
-                            <Sparkle className="size-6 text-black" />
+                        <div className="p-3 rounded-lg border">
+                            <Sparkle strokeWidth={1.5} className="size-6 text-black dark:text-white" />
                         </div>
                         <div>
-                            <h2 className="text-lg font-semibold text-gray-800">Mehasoft AI</h2>
-                            <p className="text-xs text-gray-500">Yapay Zeka Asistanınız</p>
+                            <h2 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200">Mehasoft AI</h2>
+                            <p className="text-xs text-neutral-500 dark:text-neutral-400">Yapay Zeka Asistanınız</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
                         <button 
                             onClick={clearChat} 
-                            className="flex items-center gap-2 px-3 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors cursor-pointer" 
+                            className="flex items-center gap-2 px-3 py-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-950 rounded-lg transition-colors cursor-pointer" 
                             title="Sohbeti Temizle"
                         >
                             <Trash2 size={16} />
@@ -185,7 +185,7 @@ export const MehasoftAi = () => {
                         </button>
                         <button 
                             onClick={() => setIsOpen(false)} 
-                            className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" 
+                            className="flex items-center gap-2 px-3 py-2 text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors cursor-pointer" 
                             title="Kapat"
                         >
                             <X size={16} />
@@ -193,10 +193,10 @@ export const MehasoftAi = () => {
                         </button>
                     </div>
                 </div>
-                <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-neutral-50 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 hover:[&::-webkit-scrollbar-thumb]:bg-neutral-200">
+                <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-neutral-50 dark:[&::-webkit-scrollbar-track]:bg-neutral-900 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-800 hover:[&::-webkit-scrollbar-thumb]:bg-neutral-200 dark:hover:[&::-webkit-scrollbar-thumb]:bg-neutral-700">
                     {messages.length === 0 && (
                         <div className="h-full flex items-center justify-center">
-                            <div className="text-center space-y-3 text-neutral-400">
+                            <div className="text-center space-y-3 text-blue-600 dark:text-blue-400">
                                 <Sparkles strokeWidth={1} className="w-16 h-16 mx-auto" />
                                 <p className="text-sm">Merhaba! Size nasıl yardımcı olabilirim?</p>
                             </div>
@@ -217,20 +217,20 @@ export const MehasoftAi = () => {
                                         <textarea
                                             value={editingText}
                                             onChange={(e) => setEditingText(e.target.value)}
-                                            className="w-full px-4 py-3 text-sm border rounded-xl outline-none focus:ring-2 focus:ring-blue-500 resize-none min-h-[100px]"
+                                            className="w-full px-4 py-3 text-sm border rounded-xl outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 resize-none min-h-[100px]"
                                             autoFocus
                                         />
                                         <div className="flex gap-2">
                                             <button
                                                 onClick={saveEdit}
-                                                className="flex items-center gap-1 px-3 py-1.5 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                                className="flex items-center gap-1 px-3 py-1.5 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
                                             >
                                                 <Check size={14} />
                                                 Kaydet
                                             </button>
                                             <button
                                                 onClick={cancelEdit}
-                                                className="flex items-center gap-1 px-3 py-1.5 text-xs bg-neutral-200 text-neutral-700 rounded-lg hover:bg-neutral-300 transition-colors"
+                                                className="flex items-center gap-1 px-3 py-1.5 text-xs bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-100 rounded-lg cursor-pointer hover:bg-neutral-300 transition-colors"
                                             >
                                                 <X size={14} />
                                                 İptal
@@ -242,7 +242,7 @@ export const MehasoftAi = () => {
                                         <div className={`px-4 py-3 rounded-2xl ${
                                             msg.role === "user" 
                                                 ? "bg-neutral-800 text-white rounded-tr-sm" 
-                                                : "bg-neutral-100 text-neutral-900 rounded-tl-sm"
+                                                : "bg-linear-to-br from-blue-500 dark:from-blue-800 to-purple-600 dark:bg-purple-800 text-white rounded-tl-sm"
                                         }`}>
                                             {msg.role === "user" ? (
                                                 <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
@@ -272,7 +272,7 @@ export const MehasoftAi = () => {
                                             {msg.role === "assistant" && (
                                                 <button
                                                     onClick={() => copyToClipboard(msg.content, idx)}
-                                                    className="flex cursor-pointer items-center gap-1 px-2 py-1 text-xs text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded transition-colors"
+                                                    className="flex cursor-pointer items-center gap-1 px-2 py-1 text-xs text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-50 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded transition-colors"
                                                     title="Kopyala"
                                                 >
                                                     {copiedIndex === idx ? (
@@ -291,7 +291,7 @@ export const MehasoftAi = () => {
                                             {msg.role === "user" && (
                                                 <button
                                                     onClick={() => startEditing(idx, msg.content)}
-                                                    className="flex cursor-pointer items-center gap-1 px-2 py-1 text-xs text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded transition-colors"
+                                                    className="flex cursor-pointer items-center gap-1 px-2 py-1 text-xs text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-50 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded transition-colors"
                                                     title="Düzenle"
                                                 >
                                                     <Edit2 size={12} />
@@ -314,12 +314,12 @@ export const MehasoftAi = () => {
                     {isLoading && (
                         <div className="flex gap-3 justify-start">
                             <div className="shrink-0">
-                                <div className="size-8 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                                <div className="size-8 rounded-full bg-linear-to-br from-blue-500 dark:from-blue-800 to-purple-600 dark:bg-purple-800 flex items-center justify-center">
                                     <Sparkle className="size-4 text-white" />
                                 </div>
                             </div>
-                            <div className="bg-neutral-100 px-4 py-3 rounded-2xl rounded-bl-sm">
-                                <Loader2 className="w-5 h-5 animate-spin text-neutral-600" />
+                            <div className="bg-linear-to-br from-blue-500 dark:from-blue-800 to-purple-600 dark:bg-purple-800 px-4 py-3 rounded-2xl rounded-bl-sm">
+                                <Loader2 className="w-5 h-5 animate-spin text-white" />
                             </div>
                         </div>
                     )}

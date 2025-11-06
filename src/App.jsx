@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import CustomCommand from "@/components/CustomCommand";
 import { MehasoftAi } from "@/components/MehasoftAi";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { PinnedButton } from "@/components/PinnedButton";
 import { PinnedAddButton } from "../components/PinnedButton";
 import { useState, useEffect } from "react";
@@ -149,11 +150,12 @@ function App() {
 
   return (
     <>
-      <div className="bg-linear-to-b from-blue-200 to-white min-h-screen flex flex-col p-12 select-none">
+      <div className="bg-linear-to-b from-blue-200 to-white dark:from-neutral-900 dark:to-neutral-800 min-h-screen flex flex-col p-12 select-none transition-colors duration-300">
         <div className="flex flex-col gap-12 w-full max-w-4xl mx-auto">
           <div className="flex items-center justify-center gap-4">
             <CustomCommand />
             <MehasoftAi />
+            <ThemeToggle />
           </div>
           <div className="flex items-center justify-center gap-6 flex-wrap">
             {pinnedItems.map((item, index) => (
